@@ -1,0 +1,21 @@
+aetheria-mmorpg/
+├── server/                    # خادم اللعبة
+│   ├── index.js             # الخادم الرئيسي
+│   ├── arena.js             # نظام الأرينا
+│   ├── clans.js             # نظام العشائر
+│   ├── quests.js            # نظام المهام
+│   ├── dungeons.js          # متاهات الصيحات
+│   ├── leaderboard.js       # لوحة المتصدرين
+│   └── database.js          # قاعدة البيانات
+├── client/                   # واجهة اللعبة
+│   ├── index.html           # الصفحة الرئيسية
+│   ├── css/
+│   │   └── style.css        # الأنماط
+│   ├── js/
+│   │   ├── game.js          # محرك اللعبة
+│   │   ├── ui.js            # واجهة المستخدم
+│   │   ├── quests.js        # واجهة المهام
+│   │   ├── clans.js         # واجهة العشائر
+│   │   └── dungeon.js       # واجهة المتاهات
+│   └── assets/              # الصور والأصوات
+└── package.json             # إعدادات المشروع

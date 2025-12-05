@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أساطير أثيريا - صراع الصعود</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <h1 class="login-title">أساطير أثيريا</h1>
+            <h2 class="login-subtitle">صراع الصعود</h2>
+            
+            <div class="login-form">
+                <input type="text" id="playerNameInput" class="login-input" 
+                       placeholder="اسم اللاعب" maxlength="20">
+                
+                <select id="playerClass" class="login-select">
+                    <option value="" disabled selected>اختر فئة اللاعب</option>
+                    <option value="warrior">⚔️ حارس الأثير</option>
+                    <option value="mage">🔮 ناظم الذاكرة</option>
+                    <option value="rogue">🏹 صائد الشظايا</option>
+                </select>
+                
+                <button id="startGameBtn" class="start-button">
+                    🚀 بدء الرحلة
+                </button>
+            </div>
+            
+            <div class="login-footer">
+                <p>📖 الفصل الأول: الصدع والوباء الصامت</p>
+                <p>كانت أثيريا جنة سحرية، تحكمها قوة قلب الأثير...</p>
+                <p>الهدف: أن تصبح "الصاعد" وتنقذ أثيريا من النسيان الأبدي</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- حاوية اللعبة الرئيسية -->
+    <div id="gameContainer" style="display: none;">
+        <!-- لوحة الرسم -->
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- واجهة المستخدم -->
+        <div id="uiOverlay">
+            
+            <!-- إحصائيات اللاعب -->
+            <div id="playerStats" class="ui-element">
+                <div id="playerNameDisplay">الصاعد</div>
+                
+                <div class="stat-bar health-bar">
+                    <div id="healthFill" class="stat-fill" style="width: 100%"></div>
+                    <div class="stat-label" id="healthText">100/100</div>
+                </div>
+                
+                <div class="stat-bar mana-bar">
+                    <div id="manaFill" class="stat-fill" style="width: 100%"></div>
+                    <div class="stat-label" id="manaText">100/100</div>
+                </div>
+                
+                <div id="levelDisplay" class="stat-item">
+                    <span class="stat-label">المستوى:</span>
+                    <span class="stat-value" id="levelValue">1</span>
+                </div>
+                
+                <div id="ascensionDisplay">
+                    <div class="ascension-icon">⭐</div>
+                    <div class="ascension-text">
+                        <div id="ascensionPoints">0 نقطة صعود</div>
+                        <div id="dailyMatches">0/10 مباريات اليوم</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قائمة الأزرار الرئيسية -->
+            <div id="mainMenu">
+                <button id="arenaButton" class="menu-button">
+                    ⚔️ ساحة الأرينا
+                </button>
+                
+                <button id="questsButton" class="menu-button">
+                    📜 المهام
+                </button>
+                
+                <button id="clansButton" class="menu-button">
+                    🏛️ العشائر
+                </button>
+                
+                <button id="dungeonsButton" class="menu-button">
+                    🏰 المتاهات
+                </button>
+                
+                <button id="leaderboardButton" class="menu-button">
+                    🏆 المتصدرين
+                </button>
+                
+                <button id="inventoryButton" class="menu-button">
+                    🎒 الجرد
+                </button>
+                
+                <button id="skillsButton" class="menu-button">
+                    ✨ المهارات
+                </button>
+                
+                <button id="settingsButton" class="menu-button">
+                    ⚙️ الإعدادات
+                </button>
+            </div>
+            
+            <!-- شريط المهارات السريعة -->
+            <div id="skillBar" class="ui-element">
+                <div class="skill-slot" data-slot="1">Q</div>
+                <div class="skill-slot" data-slot="2">W</div>
+                <div class="skill-slot" data-slot="3">E</div>
+                <div class="skill-slot" data-slot="4">R</div>
+                <div class="skill-slot ultimate" data-slot="5">F</div>
+            </div>
+            
+            <!-- الدردشة -->
+            <div id="chatBox" class="ui-element">
+                <div id="chatTabs">
+                    <button class="chat-tab active" data-tab="global">🌍 عام</button>
+                    <button class="chat-tab" data-tab="clan">🏛️ عشيرة</button>
+                    <button class="chat-tab" data-tab="party">👥 فريق</button>
+                </div>
+                
+                <div id="chatMessages">
+                    <div class="system-message">
+                        🎮 مرحباً بك في أساطير أثيريا! ابدأ رحلتك لتصبح الصاعد.
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." maxlength="200">
+                    <button id="sendChatBtn">إرسال</button>
+                </div>
+            </div>
+            
+            <!-- معلومات العالم -->
+            <div id="worldInfo" class="ui-element">
+                <div class="world-stat">
+                    <span class="stat-icon">👥</span>
+                    <span class="stat-value" id="onlinePlayers">0</span>
+                    <span class="stat-label">لاعبون</span>
+                </div>
+                
+                <div class="world-stat">
+                    <span class="stat-icon">⚠️</span>
+                    <span class="stat-value" id="memoryDecay">10%</span>
+                    <span class="stat-label">النسيان</span>
+                </div>
+                
+                <div class="world-stat">
+                    <span class="stat-icon">🌙</span>
+                    <span id="worldTime">ليل</span>
+                </div>
+                
+                <div class="world-event" id="activeEvent">
+                    لا توجد أحداث نشطة
+                </div>
+            </div>
+            
+            <!-- شريط التقدم الصغير -->
+            <div id="miniProgress" class="ui-element">
+                <div class="progress-info">
+                    <span class="progress-label">التقدم نحو الصعود</span>
+                    <span class="progress-percent" id="ascensionProgress">0%</span>
+                </div>
+                <div class="progress-bar mini">
+                    <div class="progress-fill" id="ascensionBar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- إشعارات سريعة -->
+            <div id="quickNotifications"></div>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة (سيتم إضافتها بواسطة JavaScript) -->
+    
+    <!-- مكتبات -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    
+    <!-- تهيئة اللعبة -->
+    <script>
+        // تهيئة اللعبة عند تحميل الصفحة
+        window.addEventListener('load', () => {
+            // إنشاء كائن اللعبة
+            const game = new AetheriaGame();
+            
+            // إنشاء واجهة المستخدم
+            const ui = new AetheriaUI(game);
+            
+            // جعل الكائنات متاحة عالمياً (لأغراض التصحيح)
+            window.game = game;
+            window.ui = ui;
+            
+            console.log('🎮 أساطير أثيريا - جاهزة للعب!');
+        });
+    </script>
+</body>
+</html>
